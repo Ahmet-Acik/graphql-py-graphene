@@ -1,5 +1,6 @@
 import graphene
 from type import User
+from data_store import data_store
 
 class CreateUser(graphene.Mutation):
     class Arguments:
@@ -11,9 +12,9 @@ class CreateUser(graphene.Mutation):
     user = graphene.Field(lambda: User)
 
     def mutate(self, info, id, name, email, password):
-        user = User(id=id, name=name, email=email, password=password)
-        # Add user to your data store here
-        return CreateUser(user=user)
+        user_data = {"id": id, "name": name, "email": email, "password": password}
+        data_store[id] = user_data
+        return CreateUser(user=User(**user_data))
 
 class UpdateUser(graphene.Mutation):
     class Arguments:
@@ -25,9 +26,12 @@ class UpdateUser(graphene.Mutation):
     user = graphene.Field(lambda: User)
 
     def mutate(self, info, id, name, email, password):
-        user = User(id=id, name=name, email=email, password=password)
-        # Update user in your data store here
-        return UpdateUser(user=user)
+        user_data = data_store.get(id)
+        if user_data:
+            user_data.update({"name": name, "email": email, "password": password})
+            data_store[id] = user_data
+            return UpdateUser(user=User(**user_data))
+        return UpdateUser(user=None)
 
 class DeleteUser(graphene.Mutation):
     class Arguments:
@@ -36,6 +40,7 @@ class DeleteUser(graphene.Mutation):
     user = graphene.Field(lambda: User)
 
     def mutate(self, info, id):
-        user = User(id=id, name="", email="", password="")
-        # Delete user from your data store here
-        return DeleteUser(user=user)
+        user_data = data_store.pop(id, None)
+        if user_data:
+            return DeleteUser(user=User(**user_data))
+        return DeleteUser(user=None)

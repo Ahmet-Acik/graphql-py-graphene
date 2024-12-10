@@ -1,12 +1,7 @@
 import graphene
 from type import User
 from mutation import CreateUser, UpdateUser, DeleteUser
-
-# Hypothetical data store
-data_store = {
-    "1": {"id": "1", "name": "Ahmet Doe", "email": "ahmet@gmail.com", "password": "123456"},
-    "2": {"id": "2", "name": "Mehmet Doe", "email": "mehmet@gmail.com", "password": "123456"}
-}
+from data_store import data_store
 
 class MyMutations(graphene.ObjectType):
     create_user = CreateUser.Field()
