@@ -38,7 +38,8 @@ class MyQuery(graphene.ObjectType):
 
 schema = graphene.Schema(query=MyQuery, mutation=MyMutations)
 
-def execute_and_print(query):
+def execute_and_print(label, query):
+    print(f"\n{label}")
     result = schema.execute(query)
     if result.errors:
         print("Errors:", result.errors)
@@ -47,6 +48,7 @@ def execute_and_print(query):
 
 # Create a new user with a different id
 execute_and_print(
+    "Creating a new user with id 3:",
     """
 mutation {
   createUser(id: "3", name: "John Doe", email: "john@gmail.com", password: "abcdef") {
@@ -63,6 +65,7 @@ mutation {
 
 # Update the newly created user
 execute_and_print(
+    "Updating the user with id 3:",
     """
 mutation {
   updateUser(id: "3", name: "John Updated", email: "john_updated@gmail.com", password: "newpassword") {
@@ -79,6 +82,7 @@ mutation {
 
 # Fetch all users before deleting the updated user
 execute_and_print(
+    "Fetching all users before deleting the user with id 3:",
     """
 {
   getUsers {
@@ -93,6 +97,7 @@ execute_and_print(
 
 # Delete the newly created user
 execute_and_print(
+    "Deleting the user with id 3:",
     """
 mutation {
   deleteUser(id: "3") {
@@ -109,6 +114,7 @@ mutation {
 
 # Fetch all users after deleting the updated user
 execute_and_print(
+    "Fetching all users after deleting the user with id 3:",
     """
 {
   getUsers {
@@ -123,6 +129,7 @@ execute_and_print(
 
 # Fetch a specific user by id
 execute_and_print(
+    "Fetching the user with id 1:",
     """
 {
   getUser(id: "1") {
@@ -137,6 +144,7 @@ execute_and_print(
 
 # Fetch a specific user by id
 execute_and_print(
+    "Fetching the user with id 1 using user query:",
     """
 {
   user(id: "1") {
