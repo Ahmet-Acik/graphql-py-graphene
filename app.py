@@ -45,10 +45,11 @@ def execute_and_print(query):
     else:
         print(result.data)
 
+# Create a new user with a different id
 execute_and_print(
     """
 mutation {
-  createUser(id: "2", name: "Mehmet Doe", email: "mehmet@gmail.com", password: "123456") {
+  createUser(id: "3", name: "John Doe", email: "john@gmail.com", password: "abcdef") {
     user {
       id
       name
@@ -60,10 +61,11 @@ mutation {
 """
 )
 
+# Update the newly created user
 execute_and_print(
     """
 mutation {
-  updateUser(id: "2", name: "Mehmet Updated", email: "mehmet_updated@gmail.com", password: "newpassword") {
+  updateUser(id: "3", name: "John Updated", email: "john_updated@gmail.com", password: "newpassword") {
     user {
       id
       name
@@ -75,21 +77,7 @@ mutation {
 """
 )
 
-execute_and_print(
-    """
-mutation {
-  deleteUser(id: "2") {
-    user {
-      id
-      name
-      email
-      password
-    }
-  }
-}
-"""
-)
-
+# Fetch all users before deleting the updated user
 execute_and_print(
     """
 {
@@ -103,6 +91,37 @@ execute_and_print(
 """
 )
 
+# Delete the newly created user
+execute_and_print(
+    """
+mutation {
+  deleteUser(id: "3") {
+    user {
+      id
+      name
+      email
+      password
+    }
+  }
+}
+"""
+)
+
+# Fetch all users after deleting the updated user
+execute_and_print(
+    """
+{
+  getUsers {
+    id
+    name
+    email
+    password
+  }
+}
+"""
+)
+
+# Fetch a specific user by id
 execute_and_print(
     """
 {
@@ -116,6 +135,7 @@ execute_and_print(
 """
 )
 
+# Fetch a specific user by id
 execute_and_print(
     """
 {
